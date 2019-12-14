@@ -4,21 +4,64 @@
 /// Work in progress
 /////////////////////////////////////////
 
-In this first project .....
+## Introduction 
 
-[picture of game]
+This is the first project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D appliction that is used as a training envirionment for Deep Q network. The goal of this environment is to collect all the yellow bananas and not touch the blue ones. The environment provides raycasts which return the distance to the floor, bananas and walls. The resulting vector is passed to the jupyter environment as a state.
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/fbF0UsxEx5Y/0.jpg)](https://www.youtube.com/watch?v=fbF0UsxEx5Y)
+```python
+Number of agents: 1
+Number of actions: 4
+States look like: [1.         0.         0.         0.         0.84408134 0.
+ 0.         1.         0.         0.0748472  0.         1.
+ 0.         0.         0.25755    1.         0.         0.
+ 0.         0.74177343 0.         1.         0.         0.
+ 0.25854847 0.         0.         1.         0.         0.09355672
+ 0.         1.         0.         0.         0.31969345 0.
+ 0.        ]
+States have length: 37
+```
+
+The agent tries to find the action with the most future cumulative reward, and thus trains the deep Neural network to predict the best action, given a random state.
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/fbF0UsxEx5Y/0.jpg)](https://www.youtube.com/watch?v=fbF0UsxEx5Y). 
+
+*Training in progress*
+
+## Setup the environment in Windows 10
+
+As with most machine learning projects, its best to start with setting up a virtual environment. This way the packages that need to be imported, don't conflict with Python packages that are already installed. For this project i used the Anaconda environment based on Python 3.6. 
+
+While the example project provides a requirements.txt, i ren into this error while adding the required packages to your project
+
+```python
+!pip -q install ./
+ERROR: Could not find a version that satisfies the requirement torch==0.4.0 (from unityagents==0.4.0) (from versions: 0.1.2, 0.1.2.post1, 0.1.2.post2)
+ERROR: No matching distribution found for torch==0.4.0 (from unityagents==0.4.0)
+```
+
+The solution, is to install a downloaded wheel file form the Pytourch website yourself. I downloaded "torch-0.4.1-cp36-cp36m-win_amd64.whl" from the pytorch site https://pytorch.org/get-started/previous-versions/
+
+```
+(UdacityRLProject1) C:\Clients\Udacity\deep-reinforcement-learning\[your project folder]>pip install torch-0.4.1-cp36-cp36m-win_amd64.whl
+Processing c:\clients\udacity\deep-reinforcement-learning\[your project folder]\torch-0.4.1-cp36-cp36m-win_amd64.whl
+Installing collected packages: torch
+Successfully installed torch-0.4.1
+```
+
+When all dependencies are resolved, the training can begin.
+
+## Training the agent with code provided by the course
+
+To start, and make sure the environment works, I have used the DQN_agent that came with the workspace solution for DQN networks. My first traning result took a while before eventually capping with an average score of around 15.x.
+
+![alt text](https://github.com/fuzzballb/UdacityRFlearningProject1/blob/master/images/Eps_decay_0_995.PNG "Training with default epsilon decay")
+
+I figured that it didn't explore the random paths engough, because the Eps_decay was quite high, at 0.995. Meaning that the amound of randomness over time deminished quite fast, making the agent stick to what it already knows 
+
+After changing the Eps_decay to 0.905 the initial "Average score" whent up a lot faster, and almost reached 16.5 within 1300 episodes
 
 
-I have used the DQN_agent that came with the workspace solution for DQN networks. My first traning result took a while before eventually capping around 15.x.
-
-I figured that it didn't explore the random paths engough, because the Eps_decay was quite high, at 0.995. Meaning that the amound of randomness over time deminished quite fast, thus nog following the best possible path 
-
-After changing the Eps_decay to 0.985 the initial "Average score" whent up a lot faster, and almost reached 16.5 within 1300 episodes
-
-
-
+'''
 Start (eps_decay=0.905)
 Episode 100	Average Score: 3.42
 Episode 200	Average Score: 8.55
@@ -35,6 +78,9 @@ Episode 1200	Average Score: 16.20
 Episode 1300	Average Score: 16.34
 Episode 1330	Average Score: 16.02
 When finished, you can close the environment.
+'''
+
+![alt text](https://github.com/fuzzballb/UdacityRFlearningProject1/blob/master/images/Eps_decay_0_905.PNG "Training with default epsilon decay")
 
 
 
