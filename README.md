@@ -48,7 +48,7 @@ Installing collected packages: torch
 Successfully installed torch-0.4.1
 ```
 
-After resolving the dependencies, i still had a code issue, because 
+After resolving the dependencies, i still had a code issue, because the action returened a numpy.int64 instead of an in32.
 
 ```
 packages\unityagents\environment.py", line 322, in step
