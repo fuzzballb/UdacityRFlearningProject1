@@ -6,7 +6,7 @@
 
 ## Introduction 
 
-This is the first project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D appliction that is used as a training envirionment for Deep Q network. The goal of this environment is to collect all the yellow bananas and not touch the blue ones. The environment provides raycasts which return the distance to the floor, bananas and walls. The resulting vector is passed to the jupyter environment as a state.
+This is the first project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D application that is used as a training environment for Deep Q network. The goal of this environment is to collect all the yellow bananas and not touch the blue ones. The environment provides ray casts which return the distance to the floor, bananas and walls. The resulting vector is passed to the Jupyter Notebook as a state.
 
 ```python
 Number of agents: 1
@@ -39,7 +39,7 @@ ERROR: Could not find a version that satisfies the requirement torch==0.4.0 (fro
 ERROR: No matching distribution found for torch==0.4.0 (from unityagents==0.4.0)
 ```
 
-The solution, is to install a downloaded wheel file form the Pytourch website yourself. I downloaded "torch-0.4.1-cp36-cp36m-win_amd64.whl" from the pytorch site https://pytorch.org/get-started/previous-versions/
+The solution, is to install a downloaded wheel file form the PyTourch website yourself. I downloaded "torch-0.4.1-cp36-cp36m-win_amd64.whl" from the PyTourch site https://pytorch.org/get-started/previous-versions/
 
 ```
 (UdacityRLProject1) C:\Clients\Udacity\deep-reinforcement-learning\[your project folder]>pip install torch-0.4.1-cp36-cp36m-win_amd64.whl
@@ -48,7 +48,7 @@ Installing collected packages: torch
 Successfully installed torch-0.4.1
 ```
 
-After resolving the dependencies, i still had a code issue, because the action returened a numpy.int64 instead of an in32.
+After resolving the dependencies, i still had a code issue, because the action returned a numpy.int64 instead of an in32.
 
 ```
 packages\unityagents\environment.py", line 322, in step
@@ -67,13 +67,13 @@ When all dependencies and issues are resolved, the training can begin.
 
 ## Training the agent with code provided by the course
 
-To start, and make sure the environment works, I have used the DQN_agent that came with the workspace solution for DQN networks. My first traning result took a while before eventually capping with an average score of around 15.x.
+To start, and make sure the environment works, I have used the DQN_agent that came with the workspace solution for DQN networks. My first training result took a while before eventually capping with an average score of around 15.x.
 
 ![alt text](https://github.com/fuzzballb/UdacityRFlearningProject1/blob/master/images/Eps_decay_0_995.PNG "Training with default epsilon decay")
 
-I figured that it didn't explore the random paths engough, because the Eps_decay was quite high, at 0.995. Meaning that the amound of randomness over time deminished quite fast, making the agent stick to what it already knows 
+I figured that it didn't explore the random paths enough, because the Eps_decay was quite high, at 0.995. Meaning that the amound of randomness over time diminished quite fast, making the agent stick to what it already knows 
 
-After changing the Eps_decay to 0.905 the initial "Average score" whent up a lot faster, and almost reached 16.5 within 1300 episodes
+After changing the Eps_decay to 0.905 the initial "Average score" went up a lot faster, and almost reached 16.5 within 1300 episodes
 
 ```
 Start (eps_decay=0.905)
@@ -96,12 +96,12 @@ When finished, you can close the environment.
 
 ![alt text](https://github.com/fuzzballb/UdacityRFlearningProject1/blob/master/images/Eps_decay_0_905.PNG "Training with diminished epsilon decay")
 
-It seems that exploring states and the resulting rewards, beyond the current policy pais off.
+It seems that exploring states and the resulting rewards, beyond the current policy pays off.
 
 
 ## project environment
 
-The README describes the the project environment details (i.e., the state and action spaces, and when the environment is considered solved).
+The README describes the project environment details (i.e., the state and action spaces, and when the environment is considered solved).
 
 ## Learning Algorithm
 
@@ -118,9 +118,9 @@ The report clearly describes the learning algorithm, along with the chosen hyper
 
 
 
-## GPU accelleration
+## GPU acceleration
 
-GPU accelleration didn't do a lot for speeding up the training. It still was about a second per episode
+GPU acceleration didn't do a lot for speeding up the training. It still was about a second per episode
 
 
 
