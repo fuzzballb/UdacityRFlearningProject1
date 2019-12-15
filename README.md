@@ -281,7 +281,9 @@ Then we train the local network to generate Q_expected resutls that are closer t
         self.optimizer.step()
 ```
 
-Essentially what is happening here is that the replay buffer has the current states and actions and the corresponding future states and rewards. By calculating the Q_targets of the current state, based on future values (rewards and next_states) we van optimise the prediction of the local network, that has the current states and actions as input.
+## Updating the target network wights
+
+Essentially what happend here is that the replay buffer has the current states and actions and the corresponding future states and rewards. By calculating the Q_targets of the current state, based on future values (rewards and next_states) we van optimise the prediction of the local network, that has the current states and actions as input.
 
 Now that the weights of the local network have been optimised, we update the network targets with the same wights, so it can also make a better prediction
 
