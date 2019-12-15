@@ -297,8 +297,26 @@ Now that the weights of the local network have been optimised, we update the net
 
 ## Hyper parameters
 
+   Navigation.ipynb
 
+```Python
+        n_episodes (int):       # maximum number of training episodes
+        max_t (int):            #maximum number of timesteps per episode
+        eps_start (float):     #starting value of epsilon, for epsilon-greedy action selection
+        eps_end (float): minimum value of epsilon
+        eps_decay (float): multiplicative factor (per episode) for decreasing epsilon
+```
 
+   Dqn_agent.py
+
+```Python
+       BUFFER_SIZE = int(1e5)  # replay buffer size
+       BATCH_SIZE = 64         # minibatch size
+       GAMMA = 0.99            # discount factor
+       TAU = 1e-3              # for soft update of target parameters
+       LR = 5e-4               # learning rate 
+       UPDATE_EVERY = 4        # how often to update the network
+```
 
 ## Ideas for Future Work
 
