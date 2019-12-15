@@ -235,13 +235,13 @@ Now we have a replay buffer and two networks, qnetwork_target and qnetwork_local
 
 The target network gets the maximum predicted Q values (Q_targets_next), given the next_states. It can make this prediction, because later on in the code, the wights for the local network are copied to this target network. 
 
-But we don't need the Q_targets_next values, instead we need the Q targets of the current state. To calculate the Q targets of the current state we use the rewards of the current states.
+But we don't need the Q_targets_next values, instead we need the Q targets of the current state action pair. To calculate the Q targets of the current state action we use the rewards.
 
 ```Python
          rewards
 ```
 
-plus the discounted rewards of the expected cumulative rewards of the previsouly predicted rewards of the next state.  
+plus the discounted Q_targets_next.  
 
 ```Python
          (gamma * Q_targets_next 
