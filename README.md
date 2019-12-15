@@ -107,6 +107,191 @@ The README describes the project environment details (i.e., the state and action
 
 The report clearly describes the learning algorithm, along with the chosen hyperparameters. It also describes the model architectures for any neural networks.
 
+Now we know the basic theory about Policy learning (Sampling actions based on past recorded experiences) we can analyze the code.
+
+ 
+1.	First we initialize the agent in the Navigation notebook
+
+Navigation.ipynb
+
+```Python
+        from dqn_agent import Agent
+            # initialise an agent
+            agent = Agent(state_size=37, action_size=4, seed=0)
+```
+
+2.	This sets the state and action size for the agent and creates two Neural networks that both map a state to an action values. 
+
+Dqn_agent.py
+
+```Python
+       self.state_size = state_size
+       self.action_size = action_size
+       self.seed = random.seed(seed)
+```
+
+# Q-Network
+
+self.qnetwork_local = QNetwork(state_size, action_size, seed).to(device)
+self.qnetwork_target = QNetwork(state_size, action_size, seed).to(device)
+
+Model.py
+
+```Python
+    def forward(self, state):
+        """Build a network that maps state -> action values."""
+        x = F.relu(self.fc1(state))
+        x = F.relu(self.fc2(x))
+        return self.fc3(x)
+```
+
+
+Lastly a replay buffer is created to store previous experiences
+
+Dqn_agent.py
+
+```Python
+        # Replay memory
+        self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed)
+```
+
+3.	The envirionment is set up and a score system is initialized for each 100 episodes. After this, we start looping trough the timesteps, and the agent perfoms an act
+
+Navigation.ipynb
+
+```Python
+    scores = []                        # list containing scores from each episode
+    scores_window = deque(maxlen=100)  # last 100 scores
+    eps = eps_start                    # initialize epsilon
+    for i_episode in range(1, n_episodes+1):
+        # state = env.reset()
+        env_info = env.reset(train_mode=True)[brain_name] # reset the environment
+        state = env_info.vector_observations[0]            # get the current state
+        score = 0
+        for t in range(max_t):
+            # 1. change to a version of agent.act
+            action = agent.act(state, eps)
+```
+
+4.	The agent returns an action given the state as per current policy. The state is passed to the local qnetwork and this retuns all action values. The sum of all these values is one. Then depending of epsilon (exploitation vs exploration) ether the highest action value is taken, or a random value. In the beginning all values return 0, because there is no reward to give.
+
+Dqn_agent.py
+
+```Python
+        state = torch.from_numpy(state).float().unsqueeze(0).to(device)
+        self.qnetwork_local.eval()
+        with torch.no_grad():
+            action_values = self.qnetwork_local(state)
+        self.qnetwork_local.train()
+
+        # Epsilon-greedy action selection
+        if random.random() > eps:
+            # .astype(int)
+            return np.argmax(action_values.cpu().data.numpy())
+        else:
+            return random.choice(np.arange(self.action_size)).astype(int)
+```
+
+
+5.	Now we know what action we are going to take, we can set a step in the envirionment using this action. The result will be the next_state, reward and done (terminal state)
+
+Navigation.ipynb
+
+```Python
+            # 2. do the step in the actual environment, and recieve a next state and reward
+            env_info = env.step(action.astype(int))[brain_name]        # send the action to the environment
+            next_state = env_info.vector_observations[0]   # get the next state
+            reward = env_info.rewards[0]                   # get the reward
+            done = env_info.local_done[0]                  # see if episode has finished
+            
+            
+            # 3. change to a version of agent.step
+            agent.step(state, action, reward, next_state, done)
+```
+
+6.	Now we know which state we where in, the action we took, the reward we got, the next state we are in and if we are done. This information is stored in the replay buffer. If there are engough experiences in the replay buffer, we can start to learn from these experiences in batches. 
+
+Dqn_agent.py
+
+```Python
+        # Save experience in replay memory
+        self.memory.add(state, action, reward, next_state, done)
+        
+        # Learn every UPDATE_EVERY time steps.
+        self.t_step = (self.t_step + 1) % UPDATE_EVERY
+        if self.t_step == 0:
+            # If enough samples are available in memory, get random subset and learn
+            if len(self.memory) > BATCH_SIZE:
+                experiences = self.memory.sample()
+                self.learn(experiences, GAMMA)
+```
+
+Here we have the replay buffer and two networks, qnetwork_target and qnetwork_local. The actions, rewards and the next states that where recorded from the environment while taking steps, are recorded in the replay buffer. When there are at least 100 steps in the replay buffer, the learning process can begin.
+
+
+The target network
+--------------------------------
+
+The target network gets the maximum predicted Q values (Q_targets_next), given the next_states. It can make this prediction, because later on in the code, the wights for the local network are copied to this target network. 
+
+But we don't need the Q_targets_next values, instead we need the Q targets of the current state. To calculate the Q targets of the current state we use the rewards of the current states.
+
+```Python
+         rewards
+```
+
+plus the discounted rewards of the expected cumulative rewards of the previsouly predicted rewards of the next state.  
+
+```Python
+         (gamma * Q_targets_next 
+```
+
+if there are no next states, then the dones are 0 and thus this part of the equation is 0. and only the rewards remain
+
+```Python
+         * (1 - dones))
+```
+
+the full equation is 
+
+```Python
+         Q_targets = rewards + (gamma * Q_targets_next * (1 - dones))
+```
+
+The local network 
+--------------------------------
+
+Now that we have a target network that can predict the Q_targets for the current states, based on the next_states. We can train the local network to generate the same results while having states and actions as input.
+
+First we predict what the local network expects the Q values to be given the current states and actions
+
+```Python
+        # Get expected Q values from local model
+        Q_expected = self.qnetwork_local(states).gather(1, actions)
+```
+
+Then we train the local network to generate Q_expected resutls that are closer to the Q_target results. 
+
+```Python
+        # Compute loss
+        loss = F.mse_loss(Q_expected, Q_targets)
+        # Minimize the loss
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
+```
+
+Essentially what is happening here is that the replay buffer has the current states and actions and the corresponding future states and rewards. By calculating the Q_targets of the current state, based on future values (rewards and next_states) we van optimise the prediction of the local network, that has the current states and actions as input.
+
+Now that the weights of the local network have been optimised, we update the network targets with the same wights, so it can also make a better prediction
+
+```Python
+        # ------------------- update target network ------------------- #
+        self.soft_update(self.qnetwork_local, self.qnetwork_target, TAU)   
+```
+
+
+
 
 ## Hyper parameters
 
