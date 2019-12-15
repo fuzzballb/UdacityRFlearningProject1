@@ -112,7 +112,7 @@ Now we know the basic theory about Policy learning (Sampling actions based on pa
  
 1.	First we initialize the agent in the Navigation notebook
 
-Navigation.ipynb
+   Navigation.ipynb
 
 ```Python
         from dqn_agent import Agent
@@ -122,7 +122,7 @@ Navigation.ipynb
 
 2.	This sets the state and action size for the agent and creates two Neural networks that both map a state to an action values. 
 
-Dqn_agent.py
+   Dqn_agent.py
 
 ```Python
        self.state_size = state_size
@@ -135,7 +135,7 @@ Dqn_agent.py
 ```
 
 
-Model.py
+   Model.py
 
 ```Python
     def forward(self, state):
@@ -148,7 +148,7 @@ Model.py
 
 Lastly a replay buffer is created to store previous experiences
 
-Dqn_agent.py
+   Dqn_agent.py
 
 ```Python
         # Replay memory
@@ -157,7 +157,7 @@ Dqn_agent.py
 
 3.	The envirionment is set up and a score system is initialized for each 100 episodes. After this, we start looping trough the timesteps, and the agent perfoms an act
 
-Navigation.ipynb
+   Navigation.ipynb
 
 ```Python
     scores = []                        # list containing scores from each episode
@@ -175,7 +175,7 @@ Navigation.ipynb
 
 4.	The agent returns an action given the state as per current policy. The state is passed to the local qnetwork and this retuns all action values. The sum of all these values is one. Then depending of epsilon (exploitation vs exploration) ether the highest action value is taken, or a random value. In the beginning all values return 0, because there is no reward to give.
 
-Dqn_agent.py
+   Dqn_agent.py
 
 ```Python
         state = torch.from_numpy(state).float().unsqueeze(0).to(device)
@@ -195,7 +195,7 @@ Dqn_agent.py
 
 5.	Now we know what action we are going to take, we can set a step in the envirionment using this action. The result will be the next_state, reward and done (terminal state)
 
-Navigation.ipynb
+   Navigation.ipynb
 
 ```Python
             # 2. do the step in the actual environment, and recieve a next state and reward
@@ -211,7 +211,7 @@ Navigation.ipynb
 
 6.	Now we know which state we where in, the action we took, the reward we got, the next state we are in and if we are done. This information is stored in the replay buffer. If there are engough experiences in the replay buffer, we can start to learn from these experiences in batches. 
 
-Dqn_agent.py
+   Dqn_agent.py
 
 ```Python
         # Save experience in replay memory
@@ -226,12 +226,12 @@ Dqn_agent.py
                 self.learn(experiences, GAMMA)
 ```
 
-# The actual learning part
+## The actual learning part
 
 Now we have a replay buffer and two networks, qnetwork_target and qnetwork_local. The actions, rewards and the next states that where recorded from the environment while taking steps, are recorded in the replay buffer. When there are at least 100 steps in the replay buffer, the learning process can begin.
 
 
-## The target network
+### The target network
 
 The target network gets the maximum predicted Q values (Q_targets_next), given the next_states. It can make this prediction, because later on in the code, the wights for the local network are copied to this target network. 
 
@@ -259,7 +259,7 @@ the full equation is
          Q_targets = rewards + (gamma * Q_targets_next * (1 - dones))
 ```
 
-## The local network 
+### The local network 
 
 Now that we have a target network that can predict the Q_targets for the current states, based on the next_states. We can train the local network to generate the same results while having states and actions as input.
 
@@ -281,7 +281,7 @@ Then we train the local network to generate Q_expected resutls that are closer t
         self.optimizer.step()
 ```
 
-## Updating the target network wights
+### Updating the target network wights
 
 Essentially what happend here is that the replay buffer has the current states and actions and the corresponding future states and rewards. By calculating the Q_targets of the current state, based on future values (rewards and next_states) we van optimise the prediction of the local network, that has the current states and actions as input.
 
