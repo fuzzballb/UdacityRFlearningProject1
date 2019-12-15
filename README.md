@@ -128,12 +128,12 @@ Dqn_agent.py
        self.state_size = state_size
        self.action_size = action_size
        self.seed = random.seed(seed)
+
+       # Q-Network
+       self.qnetwork_local = QNetwork(state_size, action_size, seed).to(device)
+       self.qnetwork_target = QNetwork(state_size, action_size, seed).to(device)
 ```
 
-# Q-Network
-
-self.qnetwork_local = QNetwork(state_size, action_size, seed).to(device)
-self.qnetwork_target = QNetwork(state_size, action_size, seed).to(device)
 
 Model.py
 
@@ -229,8 +229,7 @@ Dqn_agent.py
 Here we have the replay buffer and two networks, qnetwork_target and qnetwork_local. The actions, rewards and the next states that where recorded from the environment while taking steps, are recorded in the replay buffer. When there are at least 100 steps in the replay buffer, the learning process can begin.
 
 
-The target network
---------------------------------
+##The target network
 
 The target network gets the maximum predicted Q values (Q_targets_next), given the next_states. It can make this prediction, because later on in the code, the wights for the local network are copied to this target network. 
 
@@ -258,8 +257,7 @@ the full equation is
          Q_targets = rewards + (gamma * Q_targets_next * (1 - dones))
 ```
 
-The local network 
---------------------------------
+##The local network 
 
 Now that we have a target network that can predict the Q_targets for the current states, based on the next_states. We can train the local network to generate the same results while having states and actions as input.
 
