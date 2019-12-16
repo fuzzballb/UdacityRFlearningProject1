@@ -297,15 +297,33 @@ Now that the weights of the local network have been optimised, we update the net
 
 ## Hyper parameters
 
+Hyper parameters are constant values, that effect the learning process. By editing these, the final score can be better or worse, and the amount of time it takes to train, can also be positively or negatively impacted. There is no way to exactly determine the best possible values for these parameters. A lot depends on your simulation an how easy it is to find the best possible policy. f.e. if your agent can always just follow a strait line to the goal, it won't need as manny random steps outside of the best possible policy, but if you have a complex maze with multiple rewards, only following the best policy will lead you to a local optimum and your agent will probebly never reach its goal.
+
    Navigation.ipynb
 
 ```Python
-        n_episodes (int):       # maximum number of training episodes
-        max_t (int):            #maximum number of timesteps per episode
-        eps_start (float):     #starting value of epsilon, for epsilon-greedy action selection
-        eps_end (float): minimum value of epsilon
-        eps_decay (float): multiplicative factor (per episode) for decreasing epsilon
+        n_episodes (int):      # maximum number of training episodes
+        max_t (int):           # maximum number of timesteps per episode
+        eps_start (float):     # starting value of epsilon, for epsilon-greedy action selection
+        eps_end (float):       # minimum value of epsilon
+        eps_decay (float):     # multiplicative factor (per episode) for decreasing epsilon
 ```
+
+### n_episodes 
+The maximum amount of training episodes, before we evaluate the mean score of all the episodes. 
+
+### max_t
+The amount of time steps that an agent is allowed to take, to try and reach it's goal. If it's to high, your agent wil wonder off, and training will take a long time. if not high enough, the agent will never reach it's goal state
+
+### eps_start
+Defines the percentage of the amount of time that the agent takes a random action, as apposed to following the policy it has learned till then. Higher values make te agent take a lot of random steps, to exploxer the environment. Lower values make the agent exploit the policy it has learned.
+
+### eps_end
+The minimum amout of randomness (exploration) a agent should do
+
+### eps_decay
+How fast the transition should be, betweeen eps_start and eps_end. For environments that need a lot of exploration, this decay should be a low value.
+
 
    Dqn_agent.py
 
@@ -317,6 +335,31 @@ Now that the weights of the local network have been optimised, we update the net
        LR = 5e-4               # learning rate 
        UPDATE_EVERY = 4        # how often to update the network
 ```
+
+### buffer_size
+The experences of the agent are stored in a replay buffer. This buffer is what is used in the learning process. The reason for using a buffer is to have a diverse set of experenses to learn from, so the agent doens't only learn one set of actions. Setting this buffer to high, will give the agent to much veried input and not move towards a policy [check if true]. Setting it to low, will still cause the agent to only learn a specific move.
+
+### batch_size
+
+
+### gamma
+The amount in which you favour the imediate futrue reward apposed to distant future reward. setting this to a high number makes distant future reward more prominent, and setting it to a low value only makes the imediate future reward importent for the agent.
+
+### TAU
+The learning process uses a local and a target network. the idea is dat the target network is based on actual future step information of the environment, and that the local network needs to be trained to guess the Q-values this target network predicts, based on the current state and action. The weights of the target network are adjusted by the weights that the local network has learnd. The amount of ajustment over time, is TAU. Setting this high will make the target network weights be overwitten sooner
+
+### LR
+
+
+### update_every
+
+
+
+
+
+
+
+
 
 ## Ideas for Future Work
 
