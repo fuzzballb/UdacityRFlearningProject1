@@ -112,7 +112,7 @@ Now we know the basic theory about Policy learning (Sampling actions based on pa
  
 1.	First we initialize the agent in the Navigation notebook
 
-   Navigation.ipynb
+   *Navigation.ipynb*
 
 ```Python
         from dqn_agent import Agent
@@ -122,7 +122,7 @@ Now we know the basic theory about Policy learning (Sampling actions based on pa
 
 2.	This sets the state and action size for the agent and creates two Neural networks that both map a state to an action values. 
 
-   Dqn_agent.py
+   *Dqn_agent.py*
 
 ```Python
        self.state_size = state_size
@@ -135,7 +135,7 @@ Now we know the basic theory about Policy learning (Sampling actions based on pa
 ```
 
 
-   Model.py
+   *Model.py*
 
 ```Python
     def forward(self, state):
@@ -148,7 +148,7 @@ Now we know the basic theory about Policy learning (Sampling actions based on pa
 
 Lastly a replay buffer is created to store previous experiences
 
-   Dqn_agent.py
+   *Dqn_agent.py*
 
 ```Python
         # Replay memory
@@ -157,7 +157,7 @@ Lastly a replay buffer is created to store previous experiences
 
 3.	The envirionment is set up and a score system is initialized for each 100 episodes. After this, we start looping trough the timesteps, and the agent perfoms an act
 
-   Navigation.ipynb
+   *Navigation.ipynb*
 
 ```Python
     scores = []                        # list containing scores from each episode
@@ -175,7 +175,7 @@ Lastly a replay buffer is created to store previous experiences
 
 4.	The agent returns an action given the state as per current policy. The state is passed to the local qnetwork and this retuns all action values. The sum of all these values is one. Then depending of epsilon (exploitation vs exploration) ether the highest action value is taken, or a random value. In the beginning all values return 0, because there is no reward to give.
 
-   Dqn_agent.py
+   *Dqn_agent.py*
 
 ```Python
         state = torch.from_numpy(state).float().unsqueeze(0).to(device)
@@ -195,7 +195,7 @@ Lastly a replay buffer is created to store previous experiences
 
 5.	Now we know what action we are going to take, we can set a step in the envirionment using this action. The result will be the next_state, reward and done (terminal state)
 
-   Navigation.ipynb
+   *Navigation.ipynb*
 
 ```Python
             # 2. do the step in the actual environment, and recieve a next state and reward
@@ -211,7 +211,7 @@ Lastly a replay buffer is created to store previous experiences
 
 6.	Now we know which state we where in, the action we took, the reward we got, the next state we are in and if we are done. This information is stored in the replay buffer. If there are engough experiences in the replay buffer, we can start to learn from these experiences in batches. 
 
-   Dqn_agent.py
+   *Dqn_agent.py*
 
 ```Python
         # Save experience in replay memory
@@ -327,7 +327,7 @@ The minimum amout of randomness (exploration) a agent should do
 How fast the transition should be, betweeen eps_start and eps_end. For environments that need a lot of exploration, this decay should be a low value.
 
 
-   Dqn_agent.py
+   *Dqn_agent.py*
 
 ```Python
        BUFFER_SIZE = int(1e5)  # replay buffer size
