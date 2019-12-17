@@ -112,7 +112,7 @@ Now we know the basic theory about Policy learning (Sampling actions based on pa
  
 1.	First we initialize the agent in the Navigation notebook
 
-   *Navigation.ipynb*
+   *Navigation.ipynb*  
 
 ```Python
         from dqn_agent import Agent
