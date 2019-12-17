@@ -340,7 +340,7 @@ How fast the transition should be, betweeen eps_start and eps_end. For environme
 The experences of the agent are stored in a replay buffer. This buffer is what is used in the learning process. The reason for using a buffer is to have a diverse set of experenses to learn from, so the agent doens't only learn one set of actions. Setting this buffer to high, will give the agent to much veried input and not move towards a policy [check if true]. Setting it to low, will still cause the agent to only learn a specific move.
 
 ### batch_size
-
+When sampling the replay buffer, we don't use the whole replay buffer at once. instead we sample a random subset. If it's to high (check) if it's to low, there is not enough information to learn from.
 
 ### gamma
 The amount in which you favour the imediate futrue reward apposed to distant future reward. setting this to a high number makes distant future reward more prominent, and setting it to a low value only makes the imediate future reward importent for the agent.
@@ -349,10 +349,10 @@ The amount in which you favour the imediate futrue reward apposed to distant fut
 The learning process uses a local and a target network. the idea is dat the target network is based on actual future step information of the environment, and that the local network needs to be trained to guess the Q-values this target network predicts, based on the current state and action. The weights of the target network are adjusted by the weights that the local network has learnd. The amount of ajustment over time, is TAU. Setting this high will make the target network weights be overwitten sooner
 
 ### LR
-
+The Leraning rate is a parameter for the Neural Network optimizer, and specifies how big the jumps are during gradient decent. If the value is to high, it wel probebly overshoot the lowest value it is trying to find. If its to low, it will get stuck in al local optimum and not find the best value.
 
 ### update_every
-
+We don't need to learn from every step in the environment, because we want to learn a general idea of what to do give random states. It we set this to high, we will generalize to much, if we set it to low we will overfit on very specific situations
 
 
 
