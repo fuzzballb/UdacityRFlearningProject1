@@ -238,6 +238,14 @@ The target network gets the maximum predicted Q values (Q_targets_next), given t
 But we don't need the Q_targets_next values, instead we need the Q targets of the current state action pair. To calculate the Q targets of the current state action we use the rewards.
 
 ```Python
+         Q_targets = rewards + (gamma * Q_targets_next * (1 - dones))
+```
+
+The individual parts of this equasion
+
+rewards
+
+```Python
          rewards
 ```
 
@@ -251,12 +259,6 @@ if there are no next states, then the dones are 0 and thus this part of the equa
 
 ```Python
          * (1 - dones))
-```
-
-the full equation is 
-
-```Python
-         Q_targets = rewards + (gamma * Q_targets_next * (1 - dones))
 ```
 
 ### The local network 
