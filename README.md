@@ -363,8 +363,20 @@ We don't need to learn from every step in the environment, because we want to le
 
 ## Ideas for Future Work
 
+The first step would be to learn from pixels instead of raycasts. This takes a lot longer to learn, but it can be used with games that arn't specifically made for reinforcement learning. It's just like looking at a screen and using a controller yourself.
 
+Then there are some optimalisations that can be done to increase the score of the deep reinforcement learning algorithm. The combining these optimalisations leads to the Rainbow Algorithm
 
+- Prioritized Experience Replay
+- Double DQN (DDQN)
+- Dueling DQN
+- Noisy Nets for Exploration
+- N-step Q-Learning
+- Distributional RL
+source:  https://hollygrimm.com/rl_dqn
+
+Eventually it would be nice to be able to create someting like this Medium post, that used AI generated game situations (dreams) to play Sonic the hedgehog 
+source: https://medium.com/@mrdbourke/the-world-model-of-a-hedgehog-6ff056a6dc7f
 
 ## GPU acceleration
 
