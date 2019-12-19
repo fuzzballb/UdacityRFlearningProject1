@@ -23,9 +23,14 @@ States have length: 37
 
 The agent tries to find the action with the most future cumulative reward, and thus trains the deep Neural network to predict the best action, given a random state.
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/fbF0UsxEx5Y/0.jpg)](https://www.youtube.com/watch?v=fbF0UsxEx5Y). 
+[![Training in progress](https://img.youtube.com/vi/fbF0UsxEx5Y/0.jpg)](https://www.youtube.com/watch?v=fbF0UsxEx5Y). 
 
 *Training in progress*
+
+[![Finished training](https://img.youtube.com/vi/NDDHWA_gEkM/0.jpg)](https://www.youtube.com/watch?v=NDDHWA_gEkM). 
+
+*Finished training*
+
 
 ## Setup the environment in Windows 10
 
