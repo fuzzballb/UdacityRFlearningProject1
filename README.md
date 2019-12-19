@@ -387,7 +387,7 @@ source: https://medium.com/@mrdbourke/the-world-model-of-a-hedgehog-6ff056a6dc7f
 
 ## GPU acceleration
 
-GPU acceleration didn't do a lot for speeding up the training. It still was about a second per episode
+GPU acceleration didn't do a lot for speeding up the training. It still was about a second per episode. I'll have to check why this is the case
 
 
 
