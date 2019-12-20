@@ -76,7 +76,7 @@ To start, and make sure the environment works, I have used the DQN_agent that ca
 
 ![alt text](https://github.com/fuzzballb/UdacityRFlearningProject1/blob/master/images/Eps_decay_0_995.PNG "Training with default epsilon decay")
 
-I figured that it didn't explore the random paths enough, because the Eps_decay was quite high, at 0.995. Meaning that the amound of randomness over time diminished quite fast, making the agent stick to what it already knows 
+I figured that it didn't explore the random paths enough, because the Eps_decay was quite high, at 0.995. Meaning that the amount of randomness over time diminished quite fast, making the agent stick to what it already knows 
 
 After changing the Eps_decay to 0.905 the initial "Average score" went up a lot faster, and almost reached 16.5 within 1300 episodes
 
@@ -121,7 +121,7 @@ Now we know the basic theory about Policy learning (Sampling actions based on pa
 
 ```Python
         from dqn_agent import Agent
-            # initialise an agent
+            # initialize an agent
             agent = Agent(state_size=37, action_size=4, seed=0)
 ```
 
@@ -160,7 +160,7 @@ Lastly a replay buffer is created to store previous experiences
         self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, seed)
 ```
 
-3.	The envirionment is set up and a score system is initialized for each 100 episodes. After this, we start looping trough the timesteps, and the agent perfoms an act
+3.	The environment is set up and a score system is initialized for each 100 episodes. After this, we start looping trough the timesteps, and the agent perfoms an act
 
    *Navigation.ipynb*
 
@@ -178,7 +178,7 @@ Lastly a replay buffer is created to store previous experiences
             action = agent.act(state, eps)
 ```
 
-4.	The agent returns an action given the state as per current policy. The state is passed to the local qnetwork and this retuns all action values. The sum of all these values is one. Then depending of epsilon (exploitation vs exploration) ether the highest action value is taken, or a random value. In the beginning all values return 0, because there is no reward to give.
+4.	The agent returns an action given the state as per current policy. The state is passed to the local qnetwork and this returns all action values. The sum of all these values is one. Then depending of epsilon (exploitation vs exploration) ether the highest action value is taken, or a random value. In the beginning all values return 0, because there is no reward to give.
 
    *Dqn_agent.py*
 
@@ -198,12 +198,12 @@ Lastly a replay buffer is created to store previous experiences
 ```
 
 
-5.	Now we know what action we are going to take, we can set a step in the envirionment using this action. The result will be the next_state, reward and done (terminal state)
+5.	Now we know what action we are going to take, we can set a step in the environment using this action. The result will be the next_state, reward and done (terminal state)
 
    *Navigation.ipynb*
 
 ```Python
-            # 2. do the step in the actual environment, and recieve a next state and reward
+            # 2. do the step in the actual environment, and receive a next state and reward
             env_info = env.step(action.astype(int))[brain_name]        # send the action to the environment
             next_state = env_info.vector_observations[0]   # get the next state
             reward = env_info.rewards[0]                   # get the reward
@@ -214,7 +214,7 @@ Lastly a replay buffer is created to store previous experiences
             agent.step(state, action, reward, next_state, done)
 ```
 
-6.	Now we know which state we where in, the action we took, the reward we got, the next state we are in and if we are done. This information is stored in the replay buffer. If there are engough experiences in the replay buffer, we can start to learn from these experiences in batches. 
+6.	Now we know which state we where in, the action we took, the reward we got, the next state we are in and if we are done. This information is stored in the replay buffer. If there are enough experiences in the replay buffer, we can start to learn from these experiences in batches. 
 
    *Dqn_agent.py*
 
@@ -238,7 +238,7 @@ Now we have a replay buffer and two networks, qnetwork_target and qnetwork_local
 
 ### The target network
 
-The target network gets the maximum predicted Q values (Q_targets_next), given the next_states. It can make this prediction, because later on in the code, the wights for the local network are copied to this target network. 
+The target network gets the maximum predicted Q values (Q_targets_next), given the next_states. It can make this prediction, because later on in the code, the weights for the local network are copied to this target network. 
 
 But we don't need the Q_targets_next values, instead we need the Q targets of the current state action pair. To calculate the Q targets of the current state action we use the rewards.
 
@@ -246,7 +246,7 @@ But we don't need the Q_targets_next values, instead we need the Q targets of th
          Q_targets = rewards + (gamma * Q_targets_next * (1 - dones))
 ```
 
-The individual parts of this equasion
+The individual parts of this equation
 
 rewards
 
@@ -288,11 +288,11 @@ Then we train the local network to generate Q_expected resutls that are closer t
         self.optimizer.step()
 ```
 
-### Updating the target network wights
+### Updating the target network weights
 
-Essentially what happend here is that the replay buffer has the current states and actions and the corresponding future states and rewards. By calculating the Q_targets of the current state, based on future values (rewards and next_states) we van optimise the prediction of the local network, that has the current states and actions as input.
+Essentially what happened here is that the replay buffer has the current states and actions and the corresponding future states and rewards. By calculating the Q_targets of the current state, based on future values (rewards and next_states) we van optimize the prediction of the local network, that has the current states and actions as input.
 
-Now that the weights of the local network have been optimised, we update the network targets with the same wights, so it can also make a better prediction
+Now that the weights of the local network have been optimized, we update the network targets with the same wights, so it can also make a better prediction
 
 ```Python
         # ------------------- update target network ------------------- #
@@ -304,7 +304,7 @@ Now that the weights of the local network have been optimised, we update the net
 
 ## Hyper parameters
 
-Hyper parameters are constant values, that effect the learning process. By editing these, the final score can be better or worse, and the amount of time it takes to train, can also be positively or negatively impacted. There is no way to exactly determine the best possible values for these parameters. A lot depends on your simulation an how easy it is to find the best possible policy. f.e. if your agent can always just follow a strait line to the goal, it won't need as manny random steps outside of the best possible policy, but if you have a complex maze with multiple rewards, only following the best policy will lead you to a local optimum and your agent will probebly never reach its goal.
+Hyper parameters are constant values, that effect the learning process. By editing these, the final score can be better or worse, and the amount of time it takes to train, can also be positively or negatively impacted. There is no way to exactly determine the best possible values for these parameters. A lot depends on your simulation an how easy it is to find the best possible policy. f.e. if your agent can always just follow a strait line to the goal, it won't need as many random steps outside of the best possible policy, but if you have a complex maze with multiple rewards, only following the best policy will lead you to a local optimum and your agent will probably never reach its goal.
 
    Navigation.ipynb
 
@@ -320,16 +320,16 @@ Hyper parameters are constant values, that effect the learning process. By editi
 The maximum amount of training episodes, before we evaluate the mean score of all the episodes. 
 
 ### max_t
-The amount of time steps that an agent is allowed to take, to try and reach it's goal. If it's to high, your agent wil wonder off, and training will take a long time. if not high enough, the agent will never reach it's goal state
+The amount of time steps that an agent is allowed to take, to try and reach its goal. If it's too high, your agent will wonder off, and training will take a long time. if not high enough, the agent will never reach it's goal state
 
 ### eps_start
-Defines the percentage of the amount of time that the agent takes a random action, as apposed to following the policy it has learned till then. Higher values make te agent take a lot of random steps, to exploxer the environment. Lower values make the agent exploit the policy it has learned.
+Defines the percentage of the amount of time that the agent takes a random action, as opposed to following the policy it has learned till then. Higher values make the agent take a lot of random steps, to exploxe the environment. Lower values make the agent exploit the policy it has learned.
 
 ### eps_end
-The minimum amout of randomness (exploration) a agent should do
+The minimum amount of randomness (exploration) a agent should do
 
 ### eps_decay
-How fast the transition should be, betweeen eps_start and eps_end. For environments that need a lot of exploration, this decay should be a low value.
+How fast the transition should be, between eps_start and eps_end. For environments that need a lot of exploration, this decay should be a low value.
 
 
    *Dqn_agent.py*
@@ -344,22 +344,22 @@ How fast the transition should be, betweeen eps_start and eps_end. For environme
 ```
 
 ### buffer_size
-The experences of the agent are stored in a replay buffer. This buffer is what is used in the learning process. The reason for using a buffer is to have a diverse set of experenses to learn from, so the agent doens't only learn one set of actions. Setting this buffer to high, will give the agent to much veried input and not move towards a policy [check if true]. Setting it to low, will still cause the agent to only learn a specific move.
+The experiences of the agent are stored in a replay buffer. This buffer is what is used in the learning process. The reason for using a buffer is to have a diverse set of experiences to learn from, so the agent doens't only learn one set of actions. Setting this buffer to high, will give the agent to much varied input and not move towards a policy [check if true]. Setting it to low, will still cause the agent to only learn a specific move.
 
 ### batch_size
 When sampling the replay buffer, we don't use the whole replay buffer at once. instead we sample a random subset. If it's to high (check) if it's to low, there is not enough information to learn from.
 
 ### gamma
-The amount in which you favour the imediate futrue reward apposed to distant future reward. setting this to a high number makes distant future reward more prominent, and setting it to a low value only makes the imediate future reward importent for the agent.
+The amount in which you favor the imemdiate future reward opposed to distant future reward. setting this to a high number makes distant future reward more prominent, and setting it to a low value only makes the immediate future reward important for the agent.
 
 ### TAU
-The learning process uses a local and a target network. the idea is dat the target network is based on actual future step information of the environment, and that the local network needs to be trained to guess the Q-values this target network predicts, based on the current state and action. The weights of the target network are adjusted by the weights that the local network has learnd. The amount of ajustment over time, is TAU. Setting this high will make the target network weights be overwitten sooner
+The learning process uses a local and a target network. the idea is that the target network is based on actual future step information of the environment, and that the local network needs to be trained to guess the Q-values this target network predicts, based on the current state and action. The weights of the target network are adjusted by the weights that the local network has learned. The amount of adjustment over time, is TAU. Setting this high will make the target network weights be overwritten sooner
 
 ### LR
-The Leraning rate is a parameter for the Neural Network optimizer, and specifies how big the jumps are during gradient decent. If the value is to high, it wel probebly overshoot the lowest value it is trying to find. If its to low, it will get stuck in al local optimum and not find the best value.
+The Learning rate is a parameter for the Neural Network optimizer, and specifies how big the jumps are during gradient decent. If the value is too high, it will probably overshoot the lowest value it is trying to find. If it's too low, it will get stuck in a local optimum and not find the best value.
 
 ### update_every
-We don't need to learn from every step in the environment, because we want to learn a general idea of what to do give random states. It we set this to high, we will generalize to much, if we set it to low we will overfit on very specific situations
+We don't need to learn from every step in the environment, because we want to learn a general idea of what to do give random states. It we set this to high, we will generalize too much, if we set it to low we will overfit on very specific situations
 
 
 
@@ -370,9 +370,9 @@ We don't need to learn from every step in the environment, because we want to le
 
 ## Ideas for Future Work
 
-The first step would be to learn from pixels instead of raycasts. This takes a lot longer to learn, but it can be used with games that arn't specifically made for reinforcement learning. It's just like looking at a screen and using a controller yourself.
+The first step would be to learn from pixels instead of raycasts. This takes a lot longer to learn, but it can be used with games that aren't specifically made for reinforcement learning. It's just like looking at a screen and using a controller yourself.
 
-Then there are some optimalisations that can be done to increase the score of the deep reinforcement learning algorithm. The combining these optimalisations leads to the Rainbow Algorithm
+Then there are some optimizations that can be done to increase the score of the deep reinforcement learning algorithm. The combining these optimizations leads to the Rainbow Algorithm
 
 - Prioritized Experience Replay
 - Double DQN (DDQN)
