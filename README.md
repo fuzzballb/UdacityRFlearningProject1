@@ -1,9 +1,5 @@
 # Udacity Reinforcement Learning Project1
 
-//////////////////////////////////////////
-/// Work in progress
-/////////////////////////////////////////
-
 ## Introduction 
 
 This is the first project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D application that is used as a training environment for Deep Q network. The goal of this environment is to collect all the yellow bananas and not touch the blue ones. The environment provides ray casts which return the distance to the floor, bananas and walls. The resulting vector is passed to the Jupyter Notebook as a state.
@@ -102,11 +98,6 @@ When finished, you can close the environment.
 ![alt text](https://github.com/fuzzballb/UdacityRFlearningProject1/blob/master/images/Eps_decay_0_905.PNG "Training with diminished epsilon decay")
 
 It seems that exploring states and the resulting rewards, beyond the current policy pays off.
-
-
-## project environment
-
-The README describes the project environment details (i.e., the state and action spaces, and when the environment is considered solved).
 
 ## Learning Algorithm
 
